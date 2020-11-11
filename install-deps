@@ -197,7 +197,7 @@ elif [[ "$(uname)" == 'Linux' ]]; then
             echo "Some portion of the update is failed"
         fi
          apt-get install -y build-essential gcc g++ curl \
-            cmake libreadline-dev git-core libqt4-dev libjpeg-dev \
+             libreadline-dev git-core libqt4-dev libjpeg-dev \
             libpng-dev ncurses-dev imagemagick libzmq3-dev gfortran \
             unzip gnuplot gnuplot-x11 ipython
 
