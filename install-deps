@@ -31,9 +31,9 @@ install_openblas() {
             exit $RET;
         fi
         if [ ! -z "$PREFIX" ]; then
-            sudo make install PREFIX="$PREFIX"
+             make install PREFIX="$PREFIX"
         else
-            sudo make install
+             make install
         fi
         RET=$?;
         if [ $RET -ne 0 ]; then
@@ -169,34 +169,34 @@ elif [[ "$(uname)" == 'Linux' ]]; then
 
     # Install dependencies for Torch:
     if [[ $distribution == 'ubuntu' ]]; then
-        if sudo apt-get update ; then
+        if  apt-get update ; then
             echo "Updated successfully."
         else
             echo "Some portion of the update is failed"
         fi
         # python-software-properties is required for apt-add-repository
-        sudo apt-get install -y python-software-properties
+         apt-get install -y python-software-properties
         echo "==> Found Ubuntu version ${ubuntu_major_version}.xx"
         if [[ $ubuntu_major_version -lt '12' ]]; then
             echo '==> Ubuntu version not supported.'
             exit 1
         elif [[ $ubuntu_major_version -lt '14' ]]; then # 12.xx
-            sudo -E add-apt-repository -y ppa:chris-lea/zeromq
+             -E add-apt-repository -y ppa:chris-lea/zeromq
         elif [[ $ubuntu_major_version -lt '15' ]]; then # 14.xx
-	    sudo -E apt-get install -y software-properties-common
-            sudo -E add-apt-repository -y ppa:jtaylor/ipython
+	     -E apt-get install -y software-properties-common
+             -E add-apt-repository -y ppa:jtaylor/ipython
         else
-            sudo apt-get install -y software-properties-common \
+             apt-get install -y software-properties-common \
                 libgraphicsmagick1-dev libfftw3-dev sox libsox-dev \
                 libsox-fmt-all
         fi
 
-        if sudo apt-get update ; then
+        if  apt-get update ; then
             echo "Updated successfully."
         else
             echo "Some portion of the update is failed"
         fi
-        sudo apt-get install -y build-essential gcc g++ curl \
+         apt-get install -y build-essential gcc g++ curl \
             cmake libreadline-dev git-core libqt4-dev libjpeg-dev \
             libpng-dev ncurses-dev imagemagick libzmq3-dev gfortran \
             unzip gnuplot gnuplot-x11 ipython
@@ -205,23 +205,23 @@ elif [[ "$(uname)" == 'Linux' ]]; then
                             cut -c 1)
         if [[ $gcc_major_version == '5' ]]; then
             echo '==> Found GCC 5, installing GCC 4.9.'
-            sudo apt-get install -y gcc-4.9 libgfortran-4.9-dev g++-4.9
+             apt-get install -y gcc-4.9 libgfortran-4.9-dev g++-4.9
         fi
 
         if [[ $ubuntu_major_version -lt '15' ]]; then
-            sudo apt-get install libqt4-core libqt4-gui
+             apt-get install libqt4-core libqt4-gui
         fi
 
         install_openblas || true
 
     elif [[ $distribution == 'raspbian' ]]; then
         echo "==> Found Raspbian version ${debian_major_version}.xx"
-        if sudo apt-get update ; then
+        if  apt-get update ; then
             echo "Updated successfully."
         else
             echo "Some portion of the update is failed"
         fi
-        sudo apt-get install -y build-essential gcc g++ curl \
+         apt-get install -y build-essential gcc g++ curl \
             cmake libreadline-dev git-core libqt4-dev libjpeg-dev \
             libpng-dev ncurses-dev imagemagick libzmq3-dev gfortran \
             unzip gnuplot gnuplot-x11 ipython
@@ -229,18 +229,18 @@ elif [[ "$(uname)" == 'Linux' ]]; then
         install_openblas || true
 
     elif [[ $distribution == 'opensuse' ]]; then
-        if sudo zypper refresh ; then
+        if  zypper refresh ; then
             echo "Updated successfully."
         else
             echo "Some portion of the update failed"
         fi
-        sudo zypper install -y -t pattern devel_basis
+         zypper install -y -t pattern devel_basis
 	if [[ $opensuse_major_version == '42.2' ]]; then
-	    sudo zypper install -y gcc curl cmake readline-devel IPython git-core \
+	     zypper install -y gcc curl cmake readline-devel IPython git-core \
             	libqt4 libjpeg62-devel libpng16-compat-devel ImageMagick unzip \
             	gnuplot gcc-fortran libzmq5
 	else
-            sudo zypper install -y gcc curl cmake readline-devel IPython git-core \
+             zypper install -y gcc curl cmake readline-devel IPython git-core \
             	libqt4 libjpeg8-devel libpng15-compat-devel imagemagick unzip \
             	gnuplot gcc-fortran libzmq3
 	fi
@@ -252,36 +252,36 @@ elif [[ "$(uname)" == 'Linux' ]]; then
                       libqt4-dev libjpeg-dev libpng-dev ncurses-dev \
                       imagemagick libzmq3-dev gfortran unzip gnuplot \
                       gnuplot-x11 ipython )
-        if sudo apt-get update ; then
+        if  apt-get update ; then
             echo "Updated successfully."
         else
             echo "Some portion of the update is failed"
         fi
         # python-software-properties is required for apt-add-repository
-        sudo apt-get install -y python-software-properties
+         apt-get install -y python-software-properties
         if [[ $elementary_version == '0.3' ]]; then
             echo '==> Found Ubuntu version 14.xx based elementary installation, installing dependencies'
-            sudo apt-get install -y software-properties-common \
+             apt-get install -y software-properties-common \
                 libgraphicsmagick1-dev libfftw3-dev sox libsox-dev \
                 libsox-fmt-all
 
-            sudo -E add-apt-repository -y ppa:jtaylor/ipython
+             -E add-apt-repository -y ppa:jtaylor/ipython
         else
-            sudo -E add-apt-repository -y ppa:chris-lea/zeromq
+             -E add-apt-repository -y ppa:chris-lea/zeromq
         fi
-        if sudo apt-get update ; then
+        if  apt-get update ; then
             echo "Updated successfully."
         else
             echo "Some portion of the update is failed"
         fi
-        sudo apt-get install -y "${target_pkgs[@]}"
+         apt-get install -y "${target_pkgs[@]}"
 
         install_openblas || true
 
     elif [[ $distribution == 'archlinux' ]]; then
         echo "Archlinux installation"
         checkupdates_archlinux
-        sudo pacman -S --quiet --noconfirm --needed \
+         pacman -S --quiet --noconfirm --needed \
             cmake curl readline ncurses git \
             gnuplot unzip libjpeg-turbo libpng libpng \
             imagemagick graphicsmagick fftw sox zeromq \
@@ -292,7 +292,7 @@ elif [[ "$(uname)" == 'Linux' ]]; then
         else
             multilib=-multilib
         fi
-        sudo pacman -S --quiet --noconfirm --needed \
+         pacman -S --quiet --noconfirm --needed \
             gcc${multilib} gcc-fortran${multilib} || exit 1
         # if openblas is not installed yet
         pacman -Qs openblas &> /dev/null
@@ -304,7 +304,7 @@ elif [[ "$(uname)" == 'Linux' ]]; then
 
     elif [[ $distribution == 'fedora' ]]; then
         if [[ $fedora_major_version == '20' ]]; then
-            sudo yum install -y cmake curl readline-devel ncurses-devel \
+             yum install -y cmake curl readline-devel ncurses-devel \
                                 gcc-c++ gcc-gfortran git gnuplot unzip \
                                 libjpeg-turbo-devel libpng-devel \
                                 ImageMagick GraphicsMagick-devel fftw-devel \
@@ -315,7 +315,7 @@ elif [[ "$(uname)" == 'Linux' ]]; then
         elif [[ $fedora_major_version -ge '22' ||  $fedora_major_version -le '26' ]]; then
             #using dnf - since yum has been deprecated
             #sox-plugins-freeworld is not yet available in repos for F22
-            sudo dnf install -y make cmake curl readline-devel ncurses-devel \
+             dnf install -y make cmake curl readline-devel ncurses-devel \
                                 gcc-c++ gcc-gfortran git gnuplot unzip \
                                 libjpeg-turbo-devel libpng-devel \
                                 ImageMagick GraphicsMagick-devel fftw-devel \
@@ -328,21 +328,21 @@ elif [[ "$(uname)" == 'Linux' ]]; then
         fi
     elif [[ $distribution == 'centos' ]]; then
         if [[ $centos_major_version == '7' ]]; then
-            sudo yum install -y epel-release # a lot of things live in EPEL
-            sudo yum install -y make cmake curl readline-devel ncurses-devel \
+             yum install -y epel-release # a lot of things live in EPEL
+             yum install -y make cmake curl readline-devel ncurses-devel \
                                 gcc-c++ gcc-gfortran git gnuplot unzip \
                                 libjpeg-turbo-devel libpng-devel \
                                 ImageMagick GraphicsMagick-devel fftw-devel \
                                 sox-devel sox zeromq3-devel \
                                 qt-devel qtwebkit-devel sox-plugins-freeworld
-            sudo yum install -y python-ipython
+             yum install -y python-ipython
             install_openblas || true
         else
             echo "Only CentOS 7 is supported for now, aborting."
             exit 1
         fi
     elif [[ $distribution == 'amzn' ]]; then
-        sudo yum install -y cmake curl readline-devel ncurses-devel \
+         yum install -y cmake curl readline-devel ncurses-devel \
                             gcc-c++ gcc-gfortran git gnuplot unzip \
                             libjpeg-turbo-devel libpng-devel \
                             ImageMagick GraphicsMagick-devel fftw-devel \
@@ -353,26 +353,26 @@ elif [[ "$(uname)" == 'Linux' ]]; then
         # sox-devel sox sox-plugins-freeworld qt-devel qtwebkit-devel
         #
 
-        sudo yum --enablerepo=epel install -y zeromq3-devel
-        sudo pip install ipython
+         yum --enablerepo=epel install -y zeromq3-devel
+         pip install ipython
 
         install_openblas || true
     elif [[ $distribution == 'debian' ]]; then
 	if [[ $debian_major_version == '8' ]] || [[ $debian_major_version == '9' ]]; then
 	    echo "==> Found Debian version ${debian_major_version}"
-	    if sudo apt-get update ; then
+	    if  apt-get update ; then
 	       echo "Updated successfully."
 	    else
 	       echo "Some portion of the update is failed"
 	    fi
 	    #Basic package required for Torch
-	    sudo apt-get install -y build-essential curl \
+	     apt-get install -y build-essential curl \
 		 cmake libreadline-dev git-core libqt4-dev libjpeg-dev \
 		 libpng-dev ncurses-dev imagemagick libzmq3-dev gfortran \
 		 unzip gnuplot gnuplot-x11 ipython
 
 	    #require for common torch plug-ins
-	    sudo apt-get install -y libgraphicsmagick1-dev libfftw3-dev sox libsox-dev
+	     apt-get install -y libgraphicsmagick1-dev libfftw3-dev sox libsox-dev
 
 	    install_openblas || true
 	else
